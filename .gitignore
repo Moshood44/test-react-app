@@ -1,0 +1,27 @@
+# Expo / React Native
+node_modules/
+.expo/
+dist/
+build/
+ios/build/
+android/build/
+android/app/build/
+*.log
+
+# Environment (never commit real secrets)
+.env
+.env.local
+.env.*.local
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# TypeScript
+*.tsbuildinfo
+
+# OS
+Thumbs.db
