@@ -1,6 +1,5 @@
-import { registerRootComponent } from 'expo-router';
-import { Router } from 'expo-router';
+import { registerRootComponent } from 'expo';
+import { App as Router } from 'expo-router/build/qualified-entry';
 
-export default registerRootComponent(() => {
-  return <Router />;
-});
+// Registers the Expo Router root component as the app entry point.
+export default registerRootComponent(Router);

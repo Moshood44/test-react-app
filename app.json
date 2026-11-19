@@ -7,9 +7,11 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
+      "bundleIdentifier": "com.moshood.testreactapp",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.moshood.testreactapp",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -23,6 +25,10 @@
     },
     "router": {
       "origin": "./src/app"
-    }
+    },
+    "plugins": [
+      "expo-router",
+      "react-native-reanimated/plugin"
+    ]
   }
 }
