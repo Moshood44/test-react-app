@@ -27,8 +27,7 @@
       "origin": "./src/app"
     },
     "plugins": [
-      "expo-router",
-      "react-native-reanimated/plugin"
+      "expo-router"
     ]
   }
 }

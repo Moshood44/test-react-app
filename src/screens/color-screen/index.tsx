@@ -1,11 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Animated, {
-  useSharedValue,
-  withTiming,
-  useAnimatedStyle,
-  interpolateColor,
-} from 'react-native-reanimated';
+import { Animated, StyleSheet, View } from 'react-native';
 import { Pressable } from 'react-native';
 import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics';
 import { StatusBar } from 'expo-status-bar';
@@ -32,34 +26,35 @@ function contrastColor(hex: string): 'black' | 'white' {
 }
 
 export default function ColorScreen() {
-  const bgColor = useSharedValue('#ffffff');
-  const fromColor = useSharedValue('#ffffff');
-  const toColor = useSharedValue('#ffffff');
-  const progress = useSharedValue(0);
+  const bgColor = useState('#ffffff')[0];
+  const bgAnim = new Animated.Value(0);
 
   const [hex, setHex] = useState('#ffffff');
   const [textColor, setTextColor] = useState<'black' | 'white'>('black');
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    backgroundColor: interpolateColor(progress.value, [0, 1], [fromColor.value, toColor.value]),
-  }));
-
   const handleTap = () => {
     const next = randomColor();
-    fromColor.value = bgColor.value;
-    toColor.value = next;
-    progress.value = 0;
-    progress.value = withTiming(1, { duration: theme.motion.transitionMs });
-    bgColor.value = next;
+    Animated.timing(bgAnim, {
+      toValue: 1,
+      duration: theme.motion.transitionMs,
+      useNativeDriver: true,
+    }).start(() => {
+      bgAnim.setValue(0);
+    });
     setHex(next);
     setTextColor(contrastColor(next));
     impactAsync(ImpactFeedbackStyle.Light);
   };
 
+  const animatedBg = bgAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['#ffffff', hex],
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style={textColor === 'white' ? 'light' : 'dark'} />
-      <Animated.View style={[styles.surface, animatedStyle]}>
+      <Animated.View style={[styles.surface, { backgroundColor: animatedBg }]}>
         <Pressable style={styles.pressable} onPress={handleTap}>
           <HexDisplay hex={hex} textColor={textColor} />
         </Pressable>
