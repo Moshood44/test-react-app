@@ -26,7 +26,8 @@ function contrastColor(hex: string): 'black' | 'white' {
 }
 
 export default function ColorScreen() {
-  const bgColor = useState('#ffffff')[0];
+  const [fromColor, setFromColor] = useState('#ffffff');
+  const [toColor, setToColor] = useState('#ffffff');
   const bgAnim = new Animated.Value(0);
 
   const [hex, setHex] = useState('#ffffff');
@@ -34,13 +35,14 @@ export default function ColorScreen() {
 
   const handleTap = () => {
     const next = randomColor();
+    setFromColor(toColor);
+    setToColor(next);
+    bgAnim.setValue(0);
     Animated.timing(bgAnim, {
       toValue: 1,
       duration: theme.motion.transitionMs,
       useNativeDriver: false,
-    }).start(() => {
-      bgAnim.setValue(0);
-    });
+    }).start();
     setHex(next);
     setTextColor(contrastColor(next));
     impactAsync(ImpactFeedbackStyle.Light);
@@ -48,7 +50,7 @@ export default function ColorScreen() {
 
   const animatedBg = bgAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['#ffffff', hex],
+    outputRange: [fromColor, toColor],
   });
 
   return (
