@@ -37,7 +37,7 @@ export default function ColorScreen() {
     Animated.timing(bgAnim, {
       toValue: 1,
       duration: theme.motion.transitionMs,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start(() => {
       bgAnim.setValue(0);
     });
